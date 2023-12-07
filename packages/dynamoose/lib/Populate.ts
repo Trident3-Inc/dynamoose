@@ -60,9 +60,12 @@ export function PopulateItem (this: Item, settings?: PopulateSettings | Callback
 			const saveItems = await Promise.all(subItems.map((doc) => PopulateItem.bind(doc)(localSettings, null, {"parentKey": key})));
 			utils.object.set(this as any, prop, saveItems);
 		} else {
-			const subItem = await subModel.get(itemPropValue);
-			const saveItem: Item = await PopulateItem.bind(subItem)(localSettings, null, {"parentKey": key});
-			utils.object.set(this as any, prop, saveItem);
+			const subItem = await subModel.get(itemPropValue)
+            if (!!subItem) {
+                const saveItem = await PopulateItem.bind(subItem)(localSettings, null, { "parentKey": key })
+                utils.object.set(this as any, prop, saveItem);
+            }
+            utils.object.set(this as any, prop, subItem);
 		}
 	}));
 
