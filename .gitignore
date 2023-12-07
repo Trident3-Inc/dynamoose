@@ -4,7 +4,6 @@ node_modules/
 .nyc_output
 coverage
 coverage.html
-dist
 docs/docs
 
 docs/package-lock.json
